@@ -1,0 +1,33 @@
+<?php
+/**
+ * @file
+ * Code for the Drupal Camp Ottawa Modify Form Feature
+ */
+
+ /**
+ * Implements hook_form_FORM_ID_alter()
+ * See https://api.drupal.org/api/drupal/modules%21system%21system.api.php/function/hook_form_FORM_ID_alter/7.x
+ */
+function dco_d8_module_form_article_node_form_alter(&$form, &$form_state, $form_id) {
+  //check if published
+  if (isset($form['#node'])) {
+    if ($form['#node']->status) {
+      $lock_fields = _dco_d7_module_locked_on_publish();
+      foreach ($lock_fields as $field) {
+        $form[$field]['#disabled'] = TRUE;
+      }
+    }
+  }
+}
+
+/**
+ * Locked field when node is published
+ */
+function _dco_d8_module_locked_on_publish() {
+  return array(
+    'title',
+    'body',
+    'field_tags',
+    'field_image',    
+  );
+}
