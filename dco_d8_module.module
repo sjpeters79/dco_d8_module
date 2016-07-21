@@ -4,18 +4,27 @@
  * Code for the Drupal Camp Ottawa Modify Form Feature
  */
 
+use Drupal\Core\Entity;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\node\Entity\Node;
+ 
  /**
  * Implements hook_form_FORM_ID_alter()
- * See https://api.drupal.org/api/drupal/modules%21system%21system.api.php/function/hook_form_FORM_ID_alter/7.x
+ * See https://api.drupal.org/api/drupal/modules%21system%21system.api.php/function/hook_form_FORM_ID_alter/8.2.x
  */
-function dco_d8_module_form_article_node_form_alter(&$form, &$form_state, $form_id) {
+function dco_d8_module_form_node_article_edit_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
   //check if published
-  if (isset($form['#node'])) {
-    if ($form['#node']->status) {
-      $lock_fields = _dco_d7_module_locked_on_publish();
-      foreach ($lock_fields as $field) {
-        $form[$field]['#disabled'] = TRUE;
-      }
+  /*
+  * Lookup class Node for Drupal 8:
+  *    https://api.drupal.org/api/drupal/core!modules!node!src!Entity!Node.php/class/Node/8.2.x
+  */
+  $node = $form_state->getFormObject()->getEntity();
+  $status = $node->isPublished();
+
+  if ($status) {
+    $lock_fields = _dco_d8_module_locked_on_publish();
+    foreach  ($lock_fields as $field) {
+      $form[$field]['#disabled'] = TRUE;
     }
   }
 }

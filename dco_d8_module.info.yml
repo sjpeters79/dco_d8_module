@@ -1,4 +1,5 @@
-name = DCO Modify Form
-description = Drupal Camp Ottawa 2016 - Drupal 8 Module to modify a form and validation
-core = 8.x
-package = DCO2016
+name: DCO Modify Form
+description: Drupal Camp Ottawa 2016 - Drupal 8 Module to modify a form and validation
+type: module
+core: 8.x
+package: DCO2016
